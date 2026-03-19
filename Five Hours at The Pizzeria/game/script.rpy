@@ -8,6 +8,8 @@ define perr = Character("Miss Perr")
 default persistant.haskey = False
 default persistant.rackclimber = False
 default k=0
+default c=0
+default kelp=1
 label start:
     "You ride your bike past the towering skyscrapers that rise all around you while trying to catch a glimpse of the opening day of \"The Roadroller\"."
     "\"The Roadroller\" is a state of the art immersive arcade which has basically everything including an entire indoor pool and also zero gravity chambers."
@@ -65,6 +67,7 @@ label lobby:
     menu:
         "What do you do?"
         "Go out the sidedoor.":
+            $kelp=0
             jump sidedoor
         "Explore what the other doors offer.":
             jump secretdoor
@@ -122,6 +125,7 @@ label freekitchen:
             jump alone
 
 label cheese:
+    $c=1
     "You hide behind the shadows and make your way toward the cheese room. The smell is unbearable but you manage to not pass out."
     lonn "Come on Drey! Fetch-a me the cheese paddle. I want to check how good the cheese is."
     drey "Right away!"
@@ -178,12 +182,68 @@ label sidedoor:
             jump boredheom
         "My parents wanted me to get a job.":
             jump boredheom
-
 label lookaround:
+    kelpie "So! This is the lobby. The floor waiters only come here after 6 because we offer fine dining for dinners here."
+    "Kelpie takes you into the kitchen."
+    kelpie "This is the kitchen! We make everything here."
+    kelpie "Then up next is the cheese room, my favourite place in the entire pizzeria! Follow me."
+    "He leads you toward the cheese room door when suddenly it bursts open!"
+    lonn "WE ARE OUT OF MILK!!!!!!"
+    kelpie "I think I should go handle this. Why don't you go out the side door and meet Heom there."
+    "You are back in the lobby."
+    jump sidedoor
+label roadrollerfanbase:
+    heom "NO WAY! I'm here for the same thing! I usually run the pizza bake for my school but they don't pay me nearly as much as Mr. Lonn does."
+    heom "I'm so glad you're here! No offence but Kelpie isn't really a big Roadroller fan."
+    "You smile, you are also glad you met someone with the same interests."
+    heom "So, what's the first game you're playing there......"
+    "You two spend about two hours yapping about \"The Roadroller\""
+    heom "Okay, I think I must get back to work. This was nice."
+    "You go back into the lobby."
+    kelpie "There you are! I sorted the milk situation. Want to work on your pizza skills now?"
+    jump pizza
+label boredheom:
+    heom "Oh, thats nice. I personally am here to save up for \"The Roadroller\"."
+    "You are dissapointed that you missed your chance to make a friend."
+    heom "Anyway, I have to get going. Catch you later?"
+    menu:
+        "What do you do?"
+        "Go back to the lobby.":
+            "You walk back to the lobby."
+            kelpie "There you are! I sorted the milk situation. Want to work on your pizza skills now?"
+            jump pizza
+        "Explore the outdoor seating.":
+            "You walk around the over and find two other doors."
+            if c=1:
+                "The door leads into the cheese room. You aren't very keen on going inside."
+                "The other door meanwhile leads into greenhouse."
+                jump greenhouse
+            else:
+                "The door leads into the cheese room. You walk inside."
+                jump latercheeseroom
+label latercheeseroom:
+    if kelp=0:
+        kelpie "Hello! I'm Kelpie! What's your name?"
+        "Kelpie is wearing a comical apron on which makes him look tinier than he is."
+        $name = renpy.input(default='You', prompt="What is your name?")
+        kelpie "Nice to meet you [name]!"
+        kelpie "I'm afraid there is a milk situation here. Please wait in the lobby for me."
+        "You walk back to the lobby."
+        kelpie "There you are! I sorted the milk situation. Want to work on your pizza skills?"
+    else:
+        kelpie "Oh you're back. I'm afraid the cheese situation is still ongoing. Wait in the lobby will you?"
+        "You can hear angry italian noises coming from the back of the cheese room."
+        menu:
+            "What do you do?"
+            "Stay in the cheese room.":
+                jump cheesestay
+            "Go back to the lobby":
+                "You walk back to the lobby."
+                kelpie "There you are! I sorted the milk situation. Want to work on your pizza skills now?"
+                jump pizza
+label greenhouse:
 label pizza:
 label hidden:
 label kitchenexplore:
 label storage:
 label secretencounter:
-label roadrollerfanbase:
-label boredheom:
