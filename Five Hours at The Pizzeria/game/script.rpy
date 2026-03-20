@@ -1,15 +1,17 @@
 ﻿
-define player = Character("You")
+default name="You"
+define player = Character("[name]")
 define lonn = Character("Mr. Lonn")
 define kelpie = Character("Kelpie")
 define drey = Character ("Drey")
 define heom = Character ("Heom")
 define perr = Character("Miss Perr")
-default persistant.haskey = False
-default persistant.rackclimber = False
+default persistent.haskey = False
+default persistent.rackclimber = False
 default k=0
-default c=0
-default kelp=1
+default has_been_in_cheese=False
+default has_met_kelpie=False
+default milk=False
 label start:
     "You ride your bike past the towering skyscrapers that rise all around you while trying to catch a glimpse of the opening day of \"The Roadroller\"."
     "\"The Roadroller\" is a state of the art immersive arcade which has basically everything including an entire indoor pool and also zero gravity chambers."
@@ -43,11 +45,11 @@ label kitchen:
     "You duck behind a towering rake of baguettes waiting to be baked."
     lonn "He's here-a Kelpie! I want-a you to teach him how to make a pizza by the end of the day."
     lonn "I'll be in the cheese-a room if you need me."
-    kelpie "Yep! You got it. I'll just finish making the margherita for today. He wouldn't mind right?"
+    kelpie "Yep! You got it. I'll just finish making the marinara for today. He wouldn't mind right?"
     menu:
         "What do you want to do?"
         "Stay hidden and observe Kelpie.":
-            jump margherita
+            jump marinara
         "Quietly follow Mr. Lonn into the cheese room.":
             jump cheese
         "Go back to the lobby and wait for Kelpie to be done":
@@ -74,6 +76,7 @@ label lobby:
         "Stay put and wait for Kelpie":
             jump kelpie
 label kelpie:
+    $has_met_kelpie=True
     kelpie "Hello! I'm Kelpie! What's your name?"
     "Kelpie is wearing a comical apron on which makes him look tinier than he is."
     $name = renpy.input(default='You', prompt="What is your name?")
@@ -85,7 +88,7 @@ label kelpie:
             jump lookaround
         "Learn to make pizza with Kelpie.":
             jump pizza
-label margherita:
+label marinara:
     "You decide to stay hidden. Mr. Lonn walks into the cheese room and you catch a whiff of the musty smell inside, belch!"
     "Kelpie starts by dragging in a sack of tomatoes and he starts washing each one."
     "You get increasingly bored as Kelpie keeps washing an endless amount of tomatoes"
@@ -94,7 +97,7 @@ label margherita:
     "Kelpie walks over to the baguette rack."
     menu:
         "Climb up the rack and hide from Kelpie":
-            if persistant.rackclimber = False:
+            if persistent.rackclimber==False:
                 jump monkeybusiness
             else:
                 jump hidden
@@ -103,13 +106,17 @@ label margherita:
 label monkeybusiness:
     "You try climbing over the rack but because of your bad upperbody strength you fall."
     "Kelpie grabs you by the collar and shakes you violently."
+    $has_met_kelpie=True
     kelpie "HEY! Who are you?"
     player "I'm the new guy."
     "Kelpie lets go of you."
     kelpie "Oh! I'm really sorry! I thought you were trying to rob the store."
     kelpie "Well, why were you snooping around here. I would've been more than happy to show you around."
     "Kelpie quickly cleans up the counter and leads you out the kitchen."
-    $ persistant.rackclimber = True
+    kelpie "So, what's your name?"
+    $name=renpy.input(default='You', prompt="What is your name?")
+    kelpie "Nice to meet you [name]!"
+    $ persistent.rackclimber==True
     jump lookaround
 label freekitchen:
     "You wait for Kelpie to catch you but right when he comes by, the cheese room door bursts open."
@@ -117,7 +124,7 @@ label freekitchen:
     "Kelpie runs off into the cheese room."
     "You are alone in the kitchen now"
     menu:
-        "What do you do? CHOOSE FAST!!!!!"
+        "What do you do?"
         "Explore the kitchen":
             jump kitchenexplore
         "Go back to the lobby":
@@ -125,7 +132,7 @@ label freekitchen:
             jump alone
 
 label cheese:
-    $c=1
+    $has_been_in_cheese=True
     "You hide behind the shadows and make your way toward the cheese room. The smell is unbearable but you manage to not pass out."
     lonn "Come on Drey! Fetch-a me the cheese paddle. I want to check how good the cheese is."
     drey "Right away!"
@@ -142,6 +149,7 @@ label cheese:
             jump storage
         "Go back to the lobby.":
             "You silently move back into the kitchen."
+            $has_met_kelpie=True
             kelpie "HEY! Who are you?"
             "Kelpie grabs you by the collar and shakes you violently."
             "You did't notice Kelpie behind you."
@@ -150,6 +158,9 @@ label cheese:
             kelpie "Oh! I'm really sorry! I thought you were trying to rob the store."
             kelpie "Well, why were you snooping around here. I would've been more than happy to show you around."
             "Kelpie quickly cleans up the counter and leads you out the kitchen."
+            kelpie "So, what's your name?"
+            $name=renpy.input(default='You', prompt="What is your name?")
+            kelpie "Nice to meet you [name]!"
             jump lookaround
 label secretdoor:
     "You start opening doors at random."
@@ -157,7 +168,7 @@ label secretdoor:
     "Another one takes you up a set of stairs into the terrace of the pizzeria."
     "One more door brings you out the main entrance again."
     "You finally reach the weird door."
-    if persistant.haskey==False:
+    if persistent.haskey==False:
         "You try the handle but it doesn't give way."
         "It's locked."
         "Maybe there's a key to it somewhere!"
@@ -189,6 +200,7 @@ label lookaround:
     kelpie "Then up next is the cheese room, my favourite place in the entire pizzeria! Follow me."
     "He leads you toward the cheese room door when suddenly it bursts open!"
     lonn "WE ARE OUT OF MILK!!!!!!"
+    $milk=True
     kelpie "I think I should go handle this. Why don't you go out the side door and meet Heom there."
     "You are back in the lobby."
     jump sidedoor
@@ -214,7 +226,7 @@ label boredheom:
             jump pizza
         "Explore the outdoor seating.":
             "You walk around the over and find two other doors."
-            if c=1:
+            if c==1:
                 "The door leads into the cheese room. You aren't very keen on going inside."
                 "The other door meanwhile leads into greenhouse."
                 jump greenhouse
@@ -222,12 +234,14 @@ label boredheom:
                 "The door leads into the cheese room. You walk inside."
                 jump latercheeseroom
 label latercheeseroom:
-    if kelp=0:
+    if not has_met_kelpie:
+        $has_met_kelpie=True
         kelpie "Hello! I'm Kelpie! What's your name?"
         "Kelpie is wearing a comical apron on which makes him look tinier than he is."
         $name = renpy.input(default='You', prompt="What is your name?")
         kelpie "Nice to meet you [name]!"
         kelpie "I'm afraid there is a milk situation here. Please wait in the lobby for me."
+        $milk=True
         "You walk back to the lobby."
         kelpie "There you are! I sorted the milk situation. Want to work on your pizza skills?"
     else:
@@ -241,9 +255,53 @@ label latercheeseroom:
                 "You walk back to the lobby."
                 kelpie "There you are! I sorted the milk situation. Want to work on your pizza skills now?"
                 jump pizza
-label greenhouse:
 label pizza:
+    kelpie "Alright! Follow me into the kitchen!"
+    if not milk:
+        "You go with Kelpie into the kitchen."
+        "Suddenly the door in the corner bursts open."
+        lonn "WE ARE OUT OF MILK!!!!"
+        kelpie "I better go deal with this. Stay here for a while."
+        jump stuffhappen
+    else:
+        "He leads you infront of the huge marble counter and hands you a measuring scale."
+        kelpie "The first thing you'll need to know is to measure."
+        "He spends a long time talking about measurements and you totally zone out."
+        kelpie "Alright! I feel like you got all that. You're quite the natural you know?"
+        kelpie "Okay! It's time to finally start making a pizza."
+        "He brings out a tub of marinara, and a tray of pizza dough balls."
+        kelpie "I'll make the pizza first and then I'll let you make your own!"
+        "He takes the ball of dough and plops it on the marble which already has a bunch of semolina on it."
+        kelpie "You first make the balls into a really thin base."
+        kelpie "Then you add the marinara. The premeasured scoops will really be a good help here."
+        kelpie "Now its time for the CHEESE! My favourite part of the pizza making!"
+        "He grabs a fistfull of shreded cheese and showers it all over the pizza. Then he adds the basil leaves."
+        kelpie "Me personally, I only like basil on my pizza but feel free to make whataver you like!"
+        "Suddenly Kelpie's face drops. He stares into your eyes."
+        kelpie "Just don't ever go into the cheese room without me knowing."
+        if has_been_in_cheese:
+            kelpie "You went in right?"
+            "Kelpie becomes slightly aggressive."
+            kelpie "Did you?"
+            player "..........no"
+            kelpie "Is that so?......."
+        kelpie "Anyway, I'll be outside near the oven. Make your pizza quickly and I'll taste test it."
+        "You are a bit scared of Kelpie."
+        "But you get the sudden urge to go into the cheese room."
+        menu(time=4.0, timeout="kelpiecatch"):
+            "What do you do? CHOOSE FAST!"
+            "Go into the cheese room":
+                jump cheeseagain
+            "Stay in the kitchen.":
+                jump pizzamore
+label kelpiecatch:
+label cheeseagain:
+label pizzamore:
+label greenhouse:
 label hidden:
 label kitchenexplore:
 label storage:
 label secretencounter:
+label stuffhappen:
+label cheesestay:
+    $has_been_in_cheese=True
