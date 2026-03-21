@@ -12,6 +12,9 @@ default k=0
 default has_been_in_cheese=False
 default has_met_kelpie=False
 default milk=False
+default ishorror=False
+default heom_as_friend=False
+default been_in_greenhouse=False
 label start:
     "You ride your bike past the towering skyscrapers that rise all around you while trying to catch a glimpse of the opening day of \"The Roadroller\"."
     "\"The Roadroller\" is a state of the art immersive arcade which has basically everything including an entire indoor pool and also zero gravity chambers."
@@ -78,7 +81,6 @@ label lobby:
 label kelpie:
     $has_met_kelpie=True
     kelpie "Hello! I'm Kelpie! What's your name?"
-    "Kelpie is wearing a comical apron on which makes him look tinier than he is."
     $name = renpy.input(default='You', prompt="What is your name?")
     kelpie "Nice to meet you [name]!"
     kelpie "Alright! So do you want to jump straight into making a pizza or you want me to show you around?"
@@ -205,6 +207,7 @@ label lookaround:
     "You are back in the lobby."
     jump sidedoor
 label roadrollerfanbase:
+    $heom_as_friend=True
     heom "NO WAY! I'm here for the same thing! I usually run the pizza bake for my school but they don't pay me nearly as much as Mr. Lonn does."
     heom "I'm so glad you're here! No offence but Kelpie isn't really a big Roadroller fan."
     "You smile, you are also glad you met someone with the same interests."
@@ -212,6 +215,10 @@ label roadrollerfanbase:
     "You two spend about two hours yapping about \"The Roadroller\""
     heom "Okay, I think I must get back to work. This was nice."
     "You go back into the lobby."
+    if not has_met_kelpie:
+        kelpie "Hello! I'm Kelpie! What's your name?"
+        $name = renpy.input(default='You', prompt="What is your name?")
+        kelpie "Nice to meet you [name]!"
     kelpie "There you are! I sorted the milk situation. Want to work on your pizza skills now?"
     jump pizza
 label boredheom:
@@ -222,8 +229,15 @@ label boredheom:
         "What do you do?"
         "Go back to the lobby.":
             "You walk back to the lobby."
-            kelpie "There you are! I sorted the milk situation. Want to work on your pizza skills now?"
-            jump pizza
+            if not has_met_kelpie:
+                kelpie "Hello! I'm Kelpie! What's your name?"
+                $name = renpy.input(default='You', prompt="What is your name?")
+                kelpie "Nice to meet you [name]!"
+                kelpie "Alright! Let's go make some pizza."
+                jump pizza
+            else:
+                kelpie "There you are! I sorted the milk situation. Want to work on your pizza skills now?"
+                jump pizza
         "Explore the outdoor seating.":
             "You walk around the over and find two other doors."
             if c==1:
@@ -280,6 +294,7 @@ label pizza:
         "Suddenly Kelpie's face drops. He stares into your eyes."
         kelpie "Just don't ever go into the cheese room without me knowing."
         if has_been_in_cheese:
+            $ishorror=True
             kelpie "You went in right?"
             "Kelpie becomes slightly aggressive."
             kelpie "Did you?"
@@ -295,8 +310,65 @@ label pizza:
             "Stay in the kitchen.":
                 jump pizzamore
 label kelpiecatch:
-label cheeseagain:
+    $ishorror=True
+    kelpie "Are you thinking something [name]?"
+    "Kelpie stares at you lifelessly."
+    kelpie "I suggest you do not think about anything for a while."
+    jump pizzamore
 label pizzamore:
+    "You decide to make the pizza."
+    "After follow the same process you go out the kitchen and into the outdoor oven."
+    "You see Heom there but not Kelpie."
+    player "Say, do you feel like Kelpie is a bit suspicious?"
+    if heom_as_friend:
+        heom "I KNOW RIGHT! I've always thought he was a bit off. But I could never be sure."
+        "She quietens down and starts whispering."
+        heom "There was a rumour a few years ago. Follow me, I'll tell you about it."
+        "You follow Heom into the door behind the oven."
+        jump pizzaroom
+    else:
+        heom "Oh, him? He's kinda weird but I don't really notice it."
+        "You get the feeling that Heom is lying."
+        "Maybe if you were better friends with her you could've gotten to know more."
+        player "Oh, that's fine. Could you help me with my pizza?"
+        heom "Alright!"
+        "The oven is already lit up because of Kelpie. So she just pushes your pizza inside."
+        heom "You can wait in the lobby if you want. Kelpie's out in the Greenhouse doing something."
+        if not been_in_greenhouse:
+            "A Greenhouse? You never heard anything about a greenhouse."
+            jump lobbylater
+        else:
+            "The key! He must be searching for the key."
+            "Your hand tightens over your pocket which has the key. You know which door it opens now. "
+            "You quickly go over to the greenhouse and lock its door from the outside."
+            jump cheesebackroom          
+label pizzaroom:
+    "You enter the oven room. It is boiling hot inside and there is basically no ventilation anywhere."
+    heom "This is the Oven Room! I can see what's inside the oven at any point of time from the inside."
+    heom "Well come over here, my friends were the ones who told me about this when I first started working here."
+    "You look over at the table with a bunch of papers scattered"
+    "There is also a pile of magazines and old newspapers in the corner."
+    heom "This place wasn't always a pizzeria.."
+    if ishorror:
+        jump explanation
+    else:
+        "KNOCK KNOCK KNCKCCKC!!!"
+        "There's rapid knocking on the door."
+        lonn "Open up! Is-a [name] inside? Kelpie is looking-a for you!"
+        menu(time=2.0, timeout="lonninside"):
+            "What do you want to do?"
+            "Stay inside.":
+                "You look at Heom, almost asking her to lie for you."
+                heom "Nope, not here! I'm doing something right now."
+                heom "I'll be there to help look, this will only take a few minutes."
+                "The knocking stops."
+                lonn "That's alright-a! I'll look inside the cheese room maybe he's there."
+                heom "I don't think we should do this now. Meet me over here after your shift ends."
+                "She pushes you out the room. You slowly look around to see if someone's nearby."
+                jump kelpiebeingmad
+            "Go out and talk to Mr. Lonn":
+                jump lonnencounter
+label cheeseagain:
 label greenhouse:
 label hidden:
 label kitchenexplore:
@@ -305,3 +377,9 @@ label secretencounter:
 label stuffhappen:
 label cheesestay:
     $has_been_in_cheese=True
+label cheesebackroom:
+label lobbylater:
+label explanation:
+label kelpiebeingmad:
+label lonnencounter:
+label lonninside:
