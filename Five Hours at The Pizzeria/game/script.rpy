@@ -15,6 +15,8 @@ default milk=False
 default ishorror=False
 default heom_as_friend=False
 default been_in_greenhouse=False
+default knowsboutroom=False
+default persistent.name = "You"
 label start:
     "You ride your bike past the towering skyscrapers that rise all around you while trying to catch a glimpse of the opening day of \"The Roadroller\"."
     "\"The Roadroller\" is a state of the art immersive arcade which has basically everything including an entire indoor pool and also zero gravity chambers."
@@ -82,6 +84,7 @@ label kelpie:
     $has_met_kelpie=True
     kelpie "Hello! I'm Kelpie! What's your name?"
     $name = renpy.input(default='You', prompt="What is your name?")
+    $persistent.name = name
     kelpie "Nice to meet you [name]!"
     kelpie "Alright! So do you want to jump straight into making a pizza or you want me to show you around?"
     menu:
@@ -117,6 +120,7 @@ label monkeybusiness:
     "Kelpie quickly cleans up the counter and leads you out the kitchen."
     kelpie "So, what's your name?"
     $name=renpy.input(default='You', prompt="What is your name?")
+    $persistent.name=name
     kelpie "Nice to meet you [name]!"
     $ persistent.rackclimber==True
     jump lookaround
@@ -162,6 +166,7 @@ label cheese:
             "Kelpie quickly cleans up the counter and leads you out the kitchen."
             kelpie "So, what's your name?"
             $name=renpy.input(default='You', prompt="What is your name?")
+            $persistent.name=name
             kelpie "Nice to meet you [name]!"
             jump lookaround
 label secretdoor:
@@ -218,6 +223,7 @@ label roadrollerfanbase:
     if not has_met_kelpie:
         kelpie "Hello! I'm Kelpie! What's your name?"
         $name = renpy.input(default='You', prompt="What is your name?")
+        $persistent.name=name
         kelpie "Nice to meet you [name]!"
     kelpie "There you are! I sorted the milk situation. Want to work on your pizza skills now?"
     jump pizza
@@ -253,6 +259,7 @@ label latercheeseroom:
         kelpie "Hello! I'm Kelpie! What's your name?"
         "Kelpie is wearing a comical apron on which makes him look tinier than he is."
         $name = renpy.input(default='You', prompt="What is your name?")
+        $persistent.name=name
         kelpie "Nice to meet you [name]!"
         kelpie "I'm afraid there is a milk situation here. Please wait in the lobby for me."
         $milk=True
@@ -335,7 +342,7 @@ label pizzamore:
         "The oven is already lit up because of Kelpie. So she just pushes your pizza inside."
         heom "You can wait in the lobby if you want. Kelpie's out in the Greenhouse doing something."
         if not been_in_greenhouse:
-            "A Greenhouse? You never heard anything about a greenhouse."
+            "A greenhouse? You never heard anything about a greenhouse."
             jump lobbylater
         else:
             "The key! He must be searching for the key."
@@ -368,9 +375,70 @@ label pizzaroom:
                 jump kelpiebeingmad
             "Go out and talk to Mr. Lonn":
                 jump lonnencounter
+label kelpiebeingmad:
+    "You walk to the lobby and see Kelpie there."
+    kelpie "Where did you go?"
+    "This is when you look at the clock behind Kelpie."
+    "It reads 1 pm..."
+    "Where were the people? Why are there nobody here even though the pizzeria opened hours ago."
+    player "I in the toilet. I am not feeling very well right  now."
+    kelpie "That's unfortunate. I don't think Mr. Lonn would be too pleased to send you home on the first day of work."
+    kelpie "Anyway, I'll be out making deliveries so I cannot taste your pizza right now."
+    kelpie "But, I did ask Drey to come try it out and see if you're ready."
+    "You nod and Kelpie leaves through the main entrance carrying a huge box of pizza."
+    "You go out the side door to try talking to Heom again."
+    drey "Hey! You must be [name]! I'm Drey! The master cheesemaker. "
+    drey "Kelpie told me that you had made your first pizza. Mind if I try it out?"
+    "You follow Drey into the cheese room and out through the door leading to the oven."
+    drey "ARGH!"
+    if ishorror:
+        "You stop in your tracks horrified. There is a trail of red leading from the pizza room toward the oven."
+        "You are pretty sure it's not marinara."
+        drey "I should go call Mr. Lonn. Or the police for that matter."
+        "He runs off."
+        heom "[name]!"
+        "You can hear Heom inside the pizza room but its locked."
+        player "What's wrong!"
+        heom "I think someone tried poisoning the pizza inside the oven. They locked the door and I'm trapped inside."
+        heom "I threw a huge bottle of marinara I had from the inside at them but I don't think it did any damage."
+        "It indeed was marinara."
+        player "Wait here, I'll go get Drey. He went to go get the police."
+        jump dreysituation
+label lonnencounter:
+    lonn "Oh here-a you are!. You cannot-a be slacking off work like this! I pay you a fair wage."
+    lonn "Also Kelpie wants to meet you immediately. Go into the lobby."
+    "You walk to the lobby."
+    "Kelpie is nowhere to be found."
+    menu(time=0.3, timeout="kelpiedelivery")
+        "Chance to do something!"
+        "Go into the cheeseroom.":
+            jump weirdkelpiecheese
+label kelpiedelivery:
+    kelpie "There you are! Where did you go?"
+    kelpie "You really have to start taking this job seriously."
+    kelpie "Alright! I'm going out for some deliveries. Do you want to join me?"
+    menu:
+        "What do you want to do?"
+        "Join Kelpie and do deliveries.":
+            jump delivery 
+        "Stay in the pizzeria.":
+            jump stay
+label lonninside:
+label dreysituation:
+label weirdkelpiecheese:
 label cheeseagain:
 label greenhouse:
 label hidden:
+    "Your knowledge from your past life helped you. You latch on to the rack."
+    "Kelpie does not seem to notice the extra weight of an entire human being."
+    kelpie "Must be the ghosts."
+    jump cheesesuspicious
+label cheesesuspicious:
+    "Kelpie finishes making the marinara and you get this weird feeling to go into the cheese room!"
+    "You watch as Kelpie goes into the cheese room. You get deja vu."
+    "You slowly get down from the rack and start walking toward the door."
+    "Slowly calculating your steps to it."
+    jump secondchance
 label kitchenexplore:
 label storage:
 label secretencounter:
@@ -380,6 +448,32 @@ label cheesestay:
 label cheesebackroom:
 label lobbylater:
 label explanation:
-label kelpiebeingmad:
-label lonnencounter:
-label lonninside:
+label stay:
+label deliveries:
+label secondchance:
+    "You walk into the cheeseroom and get a whiff of the most amazing cheese in your life."
+    "Contrary to what you smelled before."
+    kelpie "It's Camembert. He wants this done by tonight."
+    "Camembert? That's a cheese right?"
+    lonn "Yep, it's better if we hurry. Follow me"
+    "Both Mr. Lonn and Kelpie go deep into the cheese room."
+    "You ignore whatever the cheese room has to offer and focus on following the two."
+    "They stop at the end of the room and take a right, hiding behind the shelves of aging parmesan."
+    "You hesitate. What are you even doing here."
+    lonn "Where's your key Kelpie? Be fast, the kid's waiting outside"
+    kelpie "Here. You go on, I'll be back after a while. He might get suspicious."
+    "You decide to go back but before you do that, you quickly catch a glimpse of a door with two keyholes."
+    "The backdoor to the cheeseroom. It needs two keys to open."
+    "You rush back into the kitchen and back into the lobby and wait for Kelpie."
+    kelpie "Oh there you are! I'm Kelpie! What's your name?"
+    $name=renpy.input(default='You', prompt="What is your name?")
+    if persistent.name==name:
+        kelpie "[name]. That's a nice name. I swear I've heard of it before."
+        kelpie "Do we know each other?"
+        player "No, I don't think so."
+    else:
+        kelpie "[name]. That's a nice name."
+        kelpie "Are you sure that's your name? You don't look like a [name] to me."
+        kelpie "I feel like something is wrong."
+        player "No, I don't think so."
+    $knowsboutroom=True
