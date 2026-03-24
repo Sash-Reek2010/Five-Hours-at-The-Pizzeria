@@ -109,6 +109,7 @@ label kitchen:
         yalign 1.0
     lonn "He's here-a Kelpie! I want-a you to teach him how to make a pizza by the end of the day."
     lonn "I'll be in the cheese-a room if you need me."
+    hide lonn_neutral with dissolve
     kelpie "Yep! You got it. I'll just finish making the marinara for today. He wouldn't mind right?"
     menu:
         "What do you want to do?"
