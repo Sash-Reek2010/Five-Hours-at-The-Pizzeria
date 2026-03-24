@@ -17,18 +17,70 @@ default heom_as_friend=False
 default been_in_greenhouse=False
 default knowsboutroom=False
 default persistent.name = "You"
+init:
+    image kelpie_mad:
+        "images/kelpie_mad.webp"
+    image kelpie_neutral:
+        "images/kelpie_neutral.webp"
+    image kelpie_smile:
+        "images/kelpie_smile.webp"
+    image lonn_neutral:
+        "images/lonn_neutral.webp"
+    image lonn_mad:
+        "images/lonn_mad.webp"
+    image lonn_smile:
+        "images/lonn_smile.webp"
+    image heom:
+        "images/heom.webp"
+    image drey:
+        "images/drey.webp"
+    image sky:
+        "images/sky.png"
+    image pizzeria:
+        "images/skyshop.png"
+    image outdoor:
+        "images/backyard_evening.webp"
+    image inside:
+        "image/inhallway2_day2.webp"
+    image stuff:
+        "image/basement1.webp"
+    image player:
+        "image/player.webp"
+    image error:
+        "image/untitled.png"
+        
 label start:
+    scene title with Fade(1.0,0.0,3.0)
+    scene sky with fade     
+    show player with dissolve:
+        zoom 1.5
+        yalign 1.0
     "You ride your bike past the towering skyscrapers that rise all around you while trying to catch a glimpse of the opening day of \"The Roadroller\"."
     "\"The Roadroller\" is a state of the art immersive arcade which has basically everything including an entire indoor pool and also zero gravity chambers."
     "But you are already late for your new part time job at Lonn's Pizzeria. You need the money to earn a ticket into \"The Roadroller\"."
     "You can see the pizzeria in all its glory from outside. It is also equipped with an outdoor pizza oven!"
+    scene pizzeria with fade
+    show player with dissolve:
+        zoom 1.5
+        yalign 1.0
+    show lonn_neutral at left with dissolve:
+        zoom 1.5 
+        yalign 1.0
     lonn "There-a you are! I have-a been waiting for you!"
     "You notice that Mr. Lonn has a very very mario-esque accent but you choose to ignore it."
     lonn "Follow-a me! I'll help-a you get used to my meraviglioso pizzeria!"
     "You follow Mr. Lonn inside."
+    scene inside with fade
+    show player with dissolve:
+        zoom 1.5
+        yalign 1.0
+    show lonn_smile at left with dissolve:
+        zoom 1.5 
+        yalign 1.0
     "The pizzeria is deserted at this time of the hour. It only officially opens at 10."
     lonn "Please-a! Take a seat-a here. I'll be back with my dear friend Kelpie who will-a be helping you today!"
     "Mr. Lonn goes into the kitchen."
+    hide lonn_smile with dissolve
     jump alone
 label alone:
     menu:
@@ -41,13 +93,20 @@ label alone:
             jump kelpie
 label kitchen:
     $ k=1
+    show lonn_neutral at left with dissolve:
+        zoom 1.5
+        yalign 1.0
     "You creep behind Mr. Lonn quitely, hiding the thud of your footsteps with his."
     "The kitchen is as magnificent as the entire pizzeria. There's a line of racks along the entire wall and a lot more near the main door of the kitchen."
     "There's shelves and shelves of ingredients from possibly every corner of the universe."
     "The amazing smell of oregano hits your nose like a roadroller on freshly lain tar."
     "You do notice something creepy. There's barely anyone inside this HUGE room. Its you and Mr. Lonn and one more person."
-    "This gives you a bad feelind."
+    "This gives you a bad feeling."
     "You duck behind a towering rake of baguettes waiting to be baked."
+    hide player with dissolve
+    show kelpie_neutral with dissolve:
+        zoom 1.5
+        yalign 1.0
     lonn "He's here-a Kelpie! I want-a you to teach him how to make a pizza by the end of the day."
     lonn "I'll be in the cheese-a room if you need me."
     kelpie "Yep! You got it. I'll just finish making the marinara for today. He wouldn't mind right?"
@@ -82,9 +141,12 @@ label lobby:
             jump kelpie
 label kelpie:
     $has_met_kelpie=True
+    show kelpie_smile at left with dissolve:
+        zoom 1.5
+        yalign 1.0
     kelpie "Hello! I'm Kelpie! What's your name?"
     $name = renpy.input(default='You', prompt="What is your name?")
-    $persistent.name = name
+    $persistent.name=name
     kelpie "Nice to meet you [name]!"
     kelpie "Alright! So do you want to jump straight into making a pizza or you want me to show you around?"
     menu:
@@ -112,6 +174,9 @@ label monkeybusiness:
     "You try climbing over the rack but because of your bad upperbody strength you fall."
     "Kelpie grabs you by the collar and shakes you violently."
     $has_met_kelpie=True
+    show player at left with dissolve:
+        zoom 1.5
+        yalign 1.0
     kelpie "HEY! Who are you?"
     player "I'm the new guy."
     "Kelpie lets go of you."
@@ -126,8 +191,16 @@ label monkeybusiness:
     jump lookaround
 label freekitchen:
     "You wait for Kelpie to catch you but right when he comes by, the cheese room door bursts open."
+    show lonn_mad at left with dissolve:
+        zoom 1.5
+        yalign 1.0
     lonn "There's a disaster here-a! We are out of milk."
     "Kelpie runs off into the cheese room."
+    hide kelpie_neutral with dissolve
+    hide lonn_mad with dissolve
+    show player with dissolve:
+        zoom 1.5 
+        yalign 1.0
     "You are alone in the kitchen now"
     menu:
         "What do you do?"
@@ -139,9 +212,17 @@ label freekitchen:
 
 label cheese:
     $has_been_in_cheese=True
+    scene basement1 with fade:
+    show lonn_neutral with dissolve:
+        zoom 1.5
+        yalign 1.0
     "You hide behind the shadows and make your way toward the cheese room. The smell is unbearable but you manage to not pass out."
     lonn "Come on Drey! Fetch-a me the cheese paddle. I want to check how good the cheese is."
+    show drey with dissolve:
+        zoom 1.5
+        yalign 1.0
     drey "Right away!"
+    hide drey with dissolve
     "The cheese room is probably the smallest room in the entire pizzeria. There's barely enough space to walk around because of the HUGEEE shelves."
     "Upon closer inspection, you notice that the shelves are fully occupied by parmesan wheels waiting to age."
     "You can see large vats of milk on either side of the entrance being paddled by giant robotic arms."
@@ -149,6 +230,7 @@ label cheese:
     "There is an eerie silence in the cheese room except for the splash of the paddles."
     lonn "That little-a kid."
     "Mr. Lonn rushes to the back of the cheese room where there's a little door. Persumably leading to the cold storage."
+    hide lonn with dissolve:
     menu:
         "What do you do?"
         "Follow Mr. Lonn":
@@ -170,6 +252,7 @@ label cheese:
             kelpie "Nice to meet you [name]!"
             jump lookaround
 label secretdoor:
+    scene error with fade
     "You start opening doors at random."
     "One door leads to the broom closet."
     "Another one takes you up a set of stairs into the terrace of the pizzeria."
@@ -183,6 +266,7 @@ label secretdoor:
         jump secretencounter
         
 label sidedoor:
+    scene error with fade
     "You walk toward the sidedoor and go out."
     "You can hear wood splintering near you and the smell of firewood is in the air."
     "Around the corner is the massive outdoor pizza oven!"
@@ -201,6 +285,7 @@ label sidedoor:
         "My parents wanted me to get a job.":
             jump boredheom
 label lookaround:
+    scene error with fade
     kelpie "So! This is the lobby. The floor waiters only come here after 6 because we offer fine dining for dinners here."
     "Kelpie takes you into the kitchen."
     kelpie "This is the kitchen! We make everything here."
@@ -212,6 +297,7 @@ label lookaround:
     "You are back in the lobby."
     jump sidedoor
 label roadrollerfanbase:
+    scene error with fade
     $heom_as_friend=True
     heom "NO WAY! I'm here for the same thing! I usually run the pizza bake for my school but they don't pay me nearly as much as Mr. Lonn does."
     heom "I'm so glad you're here! No offence but Kelpie isn't really a big Roadroller fan."
@@ -228,6 +314,7 @@ label roadrollerfanbase:
     kelpie "There you are! I sorted the milk situation. Want to work on your pizza skills now?"
     jump pizza
 label boredheom:
+    scene error with fade
     heom "Oh, thats nice. I personally am here to save up for \"The Roadroller\"."
     "You are dissapointed that you missed your chance to make a friend."
     heom "Anyway, I have to get going. Catch you later?"
@@ -254,6 +341,7 @@ label boredheom:
                 "The door leads into the cheese room. You walk inside."
                 jump latercheeseroom
 label latercheeseroom:
+    scene error with fade
     if not has_met_kelpie:
         $has_met_kelpie=True
         kelpie "Hello! I'm Kelpie! What's your name?"
@@ -277,6 +365,7 @@ label latercheeseroom:
                 kelpie "There you are! I sorted the milk situation. Want to work on your pizza skills now?"
                 jump pizza
 label pizza:
+    scene error with fade
     kelpie "Alright! Follow me into the kitchen!"
     if not milk:
         "You go with Kelpie into the kitchen."
@@ -317,12 +406,14 @@ label pizza:
             "Stay in the kitchen.":
                 jump pizzamore
 label kelpiecatch:
+    scene error with fade
     $ishorror=True
     kelpie "Are you thinking something [name]?"
     "Kelpie stares at you lifelessly."
     kelpie "I suggest you do not think about anything for a while."
     jump pizzamore
 label pizzamore:
+    scene error with fade
     "You decide to make the pizza."
     "After follow the same process you go out the kitchen and into the outdoor oven."
     "You see Heom there but not Kelpie."
@@ -350,6 +441,7 @@ label pizzamore:
             "You quickly go over to the greenhouse and lock its door from the outside."
             jump cheesebackroom          
 label pizzaroom:
+    scene error with fade
     "You enter the oven room. It is boiling hot inside and there is basically no ventilation anywhere."
     heom "This is the Oven Room! I can see what's inside the oven at any point of time from the inside."
     heom "Well come over here, my friends were the ones who told me about this when I first started working here."
@@ -376,6 +468,7 @@ label pizzaroom:
             "Go out and talk to Mr. Lonn":
                 jump lonnencounter
 label kelpiebeingmad:
+    scene error with fade
     "You walk to the lobby and see Kelpie there."
     kelpie "Where did you go?"
     "This is when you look at the clock behind Kelpie."
@@ -405,15 +498,17 @@ label kelpiebeingmad:
         player "Wait here, I'll go get Drey. He went to go get the police."
         jump dreysituation
 label lonnencounter:
+    scene error with fade
     lonn "Oh here-a you are!. You cannot-a be slacking off work like this! I pay you a fair wage."
     lonn "Also Kelpie wants to meet you immediately. Go into the lobby."
     "You walk to the lobby."
     "Kelpie is nowhere to be found."
-    menu(time=0.3, timeout="kelpiedelivery")
+    menu(time=0.3, timeout="kelpiedelivery"):
         "Chance to do something!"
         "Go into the cheeseroom.":
             jump weirdkelpiecheese
 label kelpiedelivery:
+    scene error with fade
     kelpie "There you are! Where did you go?"
     kelpie "You really have to start taking this job seriously."
     kelpie "Alright! I'm going out for some deliveries. Do you want to join me?"
@@ -424,17 +519,20 @@ label kelpiedelivery:
         "Stay in the pizzeria.":
             jump stay
 label hidden:
+    scene error with fade
     "Your knowledge from your past life helped you. You latch on to the rack."
     "Kelpie does not seem to notice the extra weight of an entire human being."
     kelpie "Must be the ghosts."
     jump cheesesuspicious
 label cheesesuspicious:
+    scene error with fade
     "Kelpie finishes making the marinara and you get this weird feeling to go into the cheese room!"
     "You watch as Kelpie goes into the cheese room. You get deja vu."
     "You slowly get down from the rack and start walking toward the door."
     "Slowly calculating your steps to it."
     jump secondchance
 label secondchance:
+    scene error with fade
     "You walk into the cheeseroom and get a whiff of the most amazing cheese in your life."
     "Contrary to what you smelled before."
     kelpie "It's Camembert. He wants this done by tonight."
@@ -463,23 +561,52 @@ label secondchance:
     $knowsboutroom=True
     jump searchingforkey
 label delivery:
+    scene error with fade
     kelpie "Okay, follow me."
     "You grab a bike helmet and follow Kelpie out the door."
     kelpie "Here's your bike. We used to have a tandem for the deliveries but nobody wanted to do deliveries so we're stuck with lone bikes now."
     "Anyway! Time to go ride!"
 
 label cheesebackroom:
+    scene error with fade
+    return
 label lobbylater:
+    scene error with fade
+    return
 label explanation:
+    scene error with fade
+    return
 label stay:
+    scene error with fade
+    return
 label kitchenexplore:
+    scene error with fade
+    return
 label storage:
+    scene error with fade
+    return
 label secretencounter:
+    scene error with fade
+    return
 label stuffhappen:
+    scene error with fade
+    return
 label cheesestay:
     $has_been_in_cheese=True
+    scene error with fade
+    return
 label lonninside:
+    scene error with fade
+    return
 label dreysituation:
+    scene error with fade
+    return
 label weirdkelpiecheese:
+    scene error with fade
+    return
 label cheeseagain:
+    scene error with fade
+    return
 label greenhouse:
+    scene error with fade
+    return
