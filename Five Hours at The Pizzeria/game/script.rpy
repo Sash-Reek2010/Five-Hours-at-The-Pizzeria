@@ -423,11 +423,6 @@ label kelpiedelivery:
             jump delivery 
         "Stay in the pizzeria.":
             jump stay
-label lonninside:
-label dreysituation:
-label weirdkelpiecheese:
-label cheeseagain:
-label greenhouse:
 label hidden:
     "Your knowledge from your past life helped you. You latch on to the rack."
     "Kelpie does not seem to notice the extra weight of an entire human being."
@@ -439,17 +434,6 @@ label cheesesuspicious:
     "You slowly get down from the rack and start walking toward the door."
     "Slowly calculating your steps to it."
     jump secondchance
-label kitchenexplore:
-label storage:
-label secretencounter:
-label stuffhappen:
-label cheesestay:
-    $has_been_in_cheese=True
-label cheesebackroom:
-label lobbylater:
-label explanation:
-label stay:
-label deliveries:
 label secondchance:
     "You walk into the cheeseroom and get a whiff of the most amazing cheese in your life."
     "Contrary to what you smelled before."
@@ -477,3 +461,25 @@ label secondchance:
         kelpie "I feel like something is wrong."
         player "No, I don't think so."
     $knowsboutroom=True
+    jump searchingforkey
+label delivery:
+    kelpie "Okay, follow me."
+    "You grab a bike helmet and follow Kelpie out the door."
+    kelpie "Here's your bike. We used to have a tandem for the deliveries but nobody wanted to do deliveries so we're stuck with lone bikes now."
+    "Anyway! Time to go ride!"
+
+label cheesebackroom:
+label lobbylater:
+label explanation:
+label stay:
+label kitchenexplore:
+label storage:
+label secretencounter:
+label stuffhappen:
+label cheesestay:
+    $has_been_in_cheese=True
+label lonninside:
+label dreysituation:
+label weirdkelpiecheese:
+label cheeseagain:
+label greenhouse:
