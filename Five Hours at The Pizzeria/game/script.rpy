@@ -41,13 +41,13 @@ init:
     image outdoor:
         "images/backyard_evening.webp"
     image inside:
-        "image/inhallway2_day2.webp"
+        "images/inthallway2_day2.webp"
     image stuff:
-        "image/basement1.webp"
+        "images/basement1.webp"
     image player:
-        "image/player.webp"
+        "images/player.webp"
     image error:
-        "image/untitled.png"
+        "images/untitled.png"
         
 label start:
     scene title with Fade(1.0,0.0,3.0)
@@ -63,7 +63,7 @@ label start:
     show player with dissolve:
         zoom 1.5
         yalign 1.0
-    show lonn_neutral at left with dissolve:
+    show lonn_neutral at right with dissolve:
         zoom 1.5 
         yalign 1.0
     lonn "There-a you are! I have-a been waiting for you!"
@@ -74,7 +74,7 @@ label start:
     show player with dissolve:
         zoom 1.5
         yalign 1.0
-    show lonn_smile at left with dissolve:
+    show lonn_smile at right with dissolve:
         zoom 1.5 
         yalign 1.0
     "The pizzeria is deserted at this time of the hour. It only officially opens at 10."
@@ -93,7 +93,7 @@ label alone:
             jump kelpie
 label kitchen:
     $ k=1
-    show lonn_neutral at left with dissolve:
+    show lonn_neutral at right with dissolve:
         zoom 1.5
         yalign 1.0
     "You creep behind Mr. Lonn quitely, hiding the thud of your footsteps with his."
@@ -141,7 +141,7 @@ label lobby:
             jump kelpie
 label kelpie:
     $has_met_kelpie=True
-    show kelpie_smile at left with dissolve:
+    show kelpie_smile at right with dissolve:
         zoom 1.5
         yalign 1.0
     kelpie "Hello! I'm Kelpie! What's your name?"
@@ -174,7 +174,7 @@ label monkeybusiness:
     "You try climbing over the rack but because of your bad upperbody strength you fall."
     "Kelpie grabs you by the collar and shakes you violently."
     $has_met_kelpie=True
-    show player at left with dissolve:
+    show player at right with dissolve:
         zoom 1.5
         yalign 1.0
     kelpie "HEY! Who are you?"
@@ -191,7 +191,7 @@ label monkeybusiness:
     jump lookaround
 label freekitchen:
     "You wait for Kelpie to catch you but right when he comes by, the cheese room door bursts open."
-    show lonn_mad at left with dissolve:
+    show lonn_mad at right with dissolve:
         zoom 1.5
         yalign 1.0
     lonn "There's a disaster here-a! We are out of milk."
@@ -212,7 +212,7 @@ label freekitchen:
 
 label cheese:
     $has_been_in_cheese=True
-    scene basement1 with fade:
+    scene basement1 with fade
     show lonn_neutral with dissolve:
         zoom 1.5
         yalign 1.0
@@ -222,7 +222,7 @@ label cheese:
         zoom 1.5
         yalign 1.0
     drey "Right away!"
-    hide drey with dissolve
+    hide drey at right with dissolve:
     "The cheese room is probably the smallest room in the entire pizzeria. There's barely enough space to walk around because of the HUGEEE shelves."
     "Upon closer inspection, you notice that the shelves are fully occupied by parmesan wheels waiting to age."
     "You can see large vats of milk on either side of the entrance being paddled by giant robotic arms."
@@ -230,7 +230,7 @@ label cheese:
     "There is an eerie silence in the cheese room except for the splash of the paddles."
     lonn "That little-a kid."
     "Mr. Lonn rushes to the back of the cheese room where there's a little door. Persumably leading to the cold storage."
-    hide lonn with dissolve:
+    hide lonn with dissolve
     menu:
         "What do you do?"
         "Follow Mr. Lonn":
@@ -566,6 +566,7 @@ label delivery:
     "You grab a bike helmet and follow Kelpie out the door."
     kelpie "Here's your bike. We used to have a tandem for the deliveries but nobody wanted to do deliveries so we're stuck with lone bikes now."
     "Anyway! Time to go ride!"
+    return
 
 label cheesebackroom:
     scene error with fade
@@ -608,5 +609,8 @@ label cheeseagain:
     scene error with fade
     return
 label greenhouse:
+    scene error with fade
+    return
+label searchingforkey:
     scene error with fade
     return
