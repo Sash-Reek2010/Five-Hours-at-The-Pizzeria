@@ -218,11 +218,11 @@ label cheese:
         yalign 1.0
     "You hide behind the shadows and make your way toward the cheese room. The smell is unbearable but you manage to not pass out."
     lonn "Come on Drey! Fetch-a me the cheese paddle. I want to check how good the cheese is."
-    show drey with dissolve:
+    show drey at right with dissolve:
         zoom 1.5
         yalign 1.0
     drey "Right away!"
-    hide drey at right with dissolve:
+    hide drey with dissolve
     "The cheese room is probably the smallest room in the entire pizzeria. There's barely enough space to walk around because of the HUGEEE shelves."
     "Upon closer inspection, you notice that the shelves are fully occupied by parmesan wheels waiting to age."
     "You can see large vats of milk on either side of the entrance being paddled by giant robotic arms."
